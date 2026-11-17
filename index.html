@@ -1,69 +1,66 @@
 <!DOCTYPE html>
 <html lang="it">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-libreria — Settimana VII Giorno I</title>
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <link type="module" src="assets/scripts/script.js"/>
+  </head>
+  <body>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini-libreria — Settimana VII Giorno I</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.9/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-yEPZ7jP9S0QKiUQ0m3jjsO4ProIW7wvR9gXkI7JOGa2XVsw53Yke2bsdkBbjmmiX" crossorigin="anonymous">
+    <header class="site-header">
+      <h1>La mia libreria</h1>
+      <p>Aggiungi i tuoi libri e segnali come letti.</p>
+    </header>
 
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <main class="container">
 
-  <script type="module" src="assets/scripts/script.js"></script>
-</head>
+      <section class="form-section">
+        <h2>Aggiungi un libro</h2>
+        <form id="aggiungi-libro" class="form">
 
-<body>
+          <div class="campo">
+            <label for="titolo">Titolo</label>
+            <input type="text" id="titolo" name="titolo" required>
+          </div>
 
-  <header class="site-header">
-    <h1>La mia libreria</h1>
-    <p>Aggiungi i tuoi libri e segnali come letti.</p>
-  </header>
+          <div class="campo">
+            <label for="autore">Autore</label>
+            <input type="text" id="autore" name="autore" required>
+          </div>
 
-  <main class="container">
+          <div class="campo">
+            <label for="anno">Anno</label>
+            <input type="number" id="anno" name="anno" required>
+          </div>
 
-    <section class="form-section mt-2 bg-body p-4 rounded">
-      <h2 class="fw-bold">Aggiungi un Libro</h2>
-      <form>
-        <div class="mb-3">
-          <label for="title" class="form-label fw-bold">Titolo</label>
-          <input type="text" class="form-control" id="title" aria-describedby="bookTitle">
+          <div class="campo">
+            <label for="formato">Formato</label>
+            <select id="formato" name="formato">
+              <option value="cartaceo">Cartaceo</option>
+              <option value="digitale">Digitale</option>
+            </select>
+          </div>
 
-        </div>
-       
-        <div class="mb-3">
-          <label for="author" class="form-label fw-bold">Autore</label>
-          <input type="text" class="form-control" id="author" aria-describedby="bookAuthor">
+          <div class="campo campo-condizionale" id="campo-dimensione" hidden>
+            <label for="dimensione">Dimensione (MB)</label>
+            <input type="number" id="dimensione" name="dimensione" step="0.1">
+          </div>
 
-        </div>
-        <div class="mb-3">
-          <label for="bookYear" class="form-label fw-bold">Anno</label>
-          <input type="number" class="form-control" id="bookYear" aria-describedby="bookYear">
+          <button type="submit" class="btn-primary">Aggiungi</button>
+        </form>
+      </section>
 
-        </div>
-        <div class="mb-3">
-      <label for="formatBook" class="form-label fw-bold">Formato</label>
-      <select id="formatBook" class="form-select">
-        <option>Cartaceo</option>
-        <option>Digitale</option>
-      </select>
-    </div>
+      <section class="lista-section">
+        <h2>I tuoi libri (<span id="contatore">0</span>)</h2>
+        <ul id="lista-libri" class="lista-libri">
+          <!-- popolato da JavaScript -->
+        </ul>
+      </section>
 
-        <button type="submit" class="btn btn-primary rounded bg-primary py-2 px-4">Aggiungi uno</button>
-      </form>
+    </main>
 
-    </section>
-
-    <section class="lista-section mt-4">
-      <h2>I tuoi libri(0)</h2>
-      <ul id="lista-libri">
-        <!-- popolato da JavaScript -->
-      </ul>
-    </section>
-
-  </main>
-
-
-</body>
-
+   
+  </body>
 </html>

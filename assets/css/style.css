@@ -143,3 +143,20 @@ body {
   background: hsl(140, 50%, 95%);
   border-color: hsl(140, 50%, 35%);
 }
+
+.lista-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-svuota{
+  color: red;
+  border: 1px solid white;
+  height: 44px;
+}
+
+.info-storage{
+  font-style: italic;
+  color:#555;
+
+}

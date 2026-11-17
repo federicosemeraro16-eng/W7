@@ -1,7 +1,9 @@
 // Mini-libreria — Settimana VII Giorno I — Versione completa
-
+const STORAGE_KEY = "libri";
 
 // === Classi ===
+
+
 
 class Libro {
   static contatore = 0;
@@ -21,8 +23,11 @@ class Libro {
   formato() {
     return "cartaceo";
   }
-}
 
+  static fromJSON(d) {
+    return Object.assign(new this(d.titolo, d.autore, d.anno), d);
+  }
+}
 class LibroDigitale extends Libro {
   constructor(titolo, autore, anno, dimensioneMb) {
     super(titolo, autore, anno);
@@ -37,7 +42,7 @@ class LibroDigitale extends Libro {
 
 // === Stato ===
 
-const libri = [];
+let libri = caricaLibri();
 
 
 // === Render ===
@@ -50,10 +55,10 @@ function renderLibri() {
         <span class="badge-formato">${l.formato()}</span>
         <div class="meta">${l.autore} — ${l.anno}</div>
       </div>
-      <div class="azioni">
+       <div class="azioni">
         ${l.letto ? '✓ letto' : '<button data-azione="leggi">Segna come letto</button>'}
-      </div>
-    </li>
+        <button data-azione="rimuovi">Rimuovi</button>
+      </div>    </li>
   `).join("");
 
   document.getElementById("lista-libri").innerHTML = html;
@@ -91,25 +96,67 @@ document.getElementById("aggiungi-libro").addEventListener("submit", (e) => {
   }
 
   libri.push(nuovo);
+  salvaLibri();
   renderLibri();
   e.target.reset();
   document.getElementById("campo-dimensione").setAttribute("hidden", "");
 });
 
+
+
+
 // Event delegation: click su "Segna come letto" su una qualsiasi card
+
+
 document.getElementById("lista-libri").addEventListener("click", (e) => {
-  const bottone = e.target.closest("[data-azione='leggi']");
+  const bottone = e.target.closest("[data-azione]");
   if (!bottone) return;
 
-  const card = bottone.closest("li");
-  const id = parseInt(card.dataset.id);
+  const id = parseInt(bottone.closest("li").dataset.id);
+  const azione = bottone.dataset.azione;
 
-  const libro = libri.find(l => l.id === id);
-  if (libro) libro.segnaComeLetto();
+  if (azione === "leggi") {
+    const libro = libri.find(l => l.id === id);
+    if (libro) libro.segnaComeLetto();
+  }
 
-  renderLibri();
+  if (azione === "rimuovi") {
+    const indice = libri.findIndex(l => l.id === id);
+    libri.splice(indice, 1)  // usa splice: array.splice(posizione, quanti)
+  }
+
+  salvaLibri();   // salva
+  renderLibri();   // ridisegna
 });
+
+document.querySelector('#svuota-tutto').addEventListener('click',(e)=>{
+  libri=[];
+  localStorage.removeItem(STORAGE_KEY);
+  renderLibri();
+})
 
 
 // === Render iniziale (lista vuota) ===
+renderLibri();
+
+
+// funzione di salvataggio
+
+function salvaLibri() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(libri));
+}
+
+function caricaLibri() {
+  const libriSalvati = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
+
+  const istanze = libriSalvati.map(d =>
+    d.dimensioneMb !== undefined ? LibroDigitale.fromJSON(d) : Libro.fromJSON(d)
+  );
+
+  Libro.contatore = istanze.length > 0 ? Math.max(...istanze.map(l => l.id)) : 0;
+
+  return istanze;
+}
+
+
 renderLibri();
